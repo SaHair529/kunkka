@@ -1,26 +1,44 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "kunkka" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('kunkka.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Kunkka!');
-	});
-
-	context.subscriptions.push(disposable);
+interface EditorState {
+	uri: string;
+	selections: { start: vscode.Position; end: vscode.Position }[]
 }
 
-// This method is called when your extension is deactivated
+let savedState: EditorState[] | null = null;
+
+export function activate(context: vscode.ExtensionContext) {
+	const disposableSet = vscode.commands.registerCommand('kunkka.setCross', () => {
+		const editors = vscode.window.visibleTextEditors;
+
+		savedState = editors.map(editor => ({
+			uri: editor.document.uri.toString(),
+			selections: editor.selections.map(sel => ({
+				start: sel.start,
+				end: sel.end
+			}))
+		}));
+
+		vscode.window.showInformationMessage('✅ Cross set! Workspace state saved.');
+	});
+
+	const disposableGo = vscode.commands.registerCommand('kunkka.goToCross', async () => {
+		if (!savedState || savedState.length === 0) {
+			vscode.window.showWarningMessage('⚠ No Cross set yet.');
+			return;
+		}
+
+		for (const state of savedState) {
+			const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse(state.uri));
+			const editor = await vscode.window.showTextDocument(doc, { preview: false});
+
+			editor.selections = state.selections.map(sel => new vscode.Selection(sel.start, sel.end));
+		}
+
+		vscode.window.showInformationMessage('↩ Returned to Cross state.');
+	});
+
+	context.subscriptions.push(disposableSet, disposableGo);
+}
+
 export function deactivate() {}

@@ -1,7 +1,7 @@
 {
   "name": "kunkka",
   "displayName": "Kunkka",
-  "description": "",
+  "description": "Kunkka is a VSCode extension to save and restore your current workspace state (open files, editor layout, cursor positions) with a simple hotkey, perfect for experimenting with risky code and quickly returning to a stable state.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.54.0"
@@ -14,8 +14,24 @@
   "contributes": {
     "commands": [
       {
-        "command": "kunkka.helloWorld",
-        "title": "Hello World"
+        "command": "kunkka.setCross",
+        "title": "Kunkka: Set Cross (Save Workspace State)"
+      },
+      {
+        "command": "kunkka.goToCross",
+        "title": "Kunkka: Go To Cross (Restore Workspace State)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "kunkka.setCross",
+        "key": "ctrl+alt+x",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "kunkka.goToCross",
+        "key": "ctrl+alt+y",
+        "when": "editorTextFocus"
       }
     ]
   },
