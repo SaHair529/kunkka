@@ -19,12 +19,12 @@ export function activate(context: vscode.ExtensionContext) {
 			}))
 		}));
 
-		vscode.window.showInformationMessage('✅ Cross set! Workspace state saved.');
+		vscode.window.showInformationMessage('Cross set! Workspace state saved.');
 	});
 
 	const disposableGo = vscode.commands.registerCommand('kunkka.goToCross', async () => {
 		if (!savedState || savedState.length === 0) {
-			vscode.window.showWarningMessage('⚠ No Cross set yet.');
+			vscode.window.showWarningMessage('No Cross set yet.');
 			return;
 		}
 
