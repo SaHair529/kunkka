@@ -19,7 +19,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 		for (const tab of tabs) {
 			const uri = (tab.input as any)?.uri as vscode.Uri;
-			if (!uri) continue;
+			if (!uri) {
+				continue;
+			}
 
 			let content = '';
 			let selections: { start: vscode.Position; end: vscode.Position }[] = [];
