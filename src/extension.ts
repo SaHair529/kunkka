@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 interface EditorState {
 	uri: string;
 	selections: { start: vscode.Position; end: vscode.Position }[];
+	content: string;
 }
 interface CrossState {
 	tabs: EditorState[];
@@ -12,32 +13,41 @@ interface CrossState {
 let savedState: CrossState | null = null;
 
 export function activate(context: vscode.ExtensionContext) {
-	const disposableSet = vscode.commands.registerCommand('kunkka.setCross', () => {
+	const disposableSet = vscode.commands.registerCommand('kunkka.setCross', async () => {
 		const tabs = vscode.window.tabGroups.all.flatMap(group => group.tabs);
 		const order: EditorState[] = [];
 
-		tabs.forEach((tab, i) => {
+		for (const tab of tabs) {
 			const uri = (tab.input as any)?.uri as vscode.Uri;
-			if (!uri) {
-				return;
+			if (!uri) continue;
+
+			let content = '';
+			let selections: { start: vscode.Position; end: vscode.Position }[] = [];
+
+			const openEditor = vscode.window.visibleTextEditors.find(
+				ed => ed.document.uri.toString() === uri.toString()
+			);
+			if (openEditor) {
+				content = openEditor.document.getText();
+				selections = openEditor.selections.map(sel => ({
+					start: sel.start,
+					end: sel.end
+				}));
+			} else {
+				const doc = await vscode.workspace.openTextDocument(uri);
+				content = doc.getText();
 			}
 
-			const openEditor = vscode.window.visibleTextEditors.find(ed => ed.document.uri.toString() === uri.toString());
-			const selections = openEditor ? openEditor.selections.map(sel => ({
-				start: sel.start,
-				end: sel.end
-			})) : [];
-
-			order.push({ uri: uri.toString(), selections });
-		});
+			order.push({ uri: uri.toString(), selections, content });
+		}
 
 		const activeTab = vscode.window.tabGroups.activeTabGroup.activeTab;
 		const activeIndex = tabs.findIndex(t => t === activeTab);
 
 		savedState = { tabs: order, activeIndex };
-		vscode.window.showInformationMessage(`Cross set! Saved ${order.length} tabs.`);
-
+		vscode.window.showInformationMessage(`✅ Cross set! Saved ${order.length} tabs (with content).`);
 	});
+
 
 	const disposableGo = vscode.commands.registerCommand('kunkka.goToCross', async () => {
 		if (!savedState || savedState.tabs.length === 0) {
@@ -52,13 +62,33 @@ export function activate(context: vscode.ExtensionContext) {
 
 		const openedEditors: vscode.TextEditor[] = [];
 
-		for (let i = 0; i < savedState.tabs.length; i++) {
-			const state = savedState.tabs[i];
-			const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse(state.uri));
-			const editor = await vscode.window.showTextDocument(doc, { preview: false });
-			editor.selections = state.selections.map(sel => new vscode.Selection(sel.start, sel.end));
+		for (const state of savedState.tabs) {
+			let editor = vscode.window.visibleTextEditors.find(
+				e => e.document.uri.toString() === state.uri
+			);
+
+			if (!editor) {
+				const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse(state.uri));
+				editor = await vscode.window.showTextDocument(doc, { preview: false });
+			}
+
+			await editor.edit(editBuilder => {
+				const fullRange = new vscode.Range(
+					editor.document.positionAt(0),
+					editor.document.positionAt(editor.document.getText().length)
+				);
+				editBuilder.replace(fullRange, state.content);
+			});
+
+			await editor.document.save();
+
+			if (state.selections.length > 0) {
+				editor.selections = state.selections.map(sel => new vscode.Selection(sel.start, sel.end));
+			}
+
 			openedEditors.push(editor);
 		}
+
 
 		const activeIndex = savedState.activeIndex;
 		if (openedEditors[activeIndex]) {
