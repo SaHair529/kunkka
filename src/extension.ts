@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const activeIndex = tabs.findIndex(t => t === activeTab);
 
 		savedState = { tabs: order, activeIndex };
-		vscode.window.showInformationMessage(`✅ Cross set! Saved ${order.length} tabs (with content).`);
+		vscode.window.showInformationMessage(`Cross set!`);
 	});
 
 
