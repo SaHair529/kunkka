@@ -1,7 +1,5 @@
 # Kunkka
 
-![Kunkka Logo](images/logo.png)
-
 ## Quickly Save and Restore Your VSCode Workspace State
 
 Kunkka is a Visual Studio Code extension that allows you to **save the current state of your open tabs, cursors, and content** with one click and quickly **restore it** like a "cross" mark on a board.
