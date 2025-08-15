@@ -1,71 +1,83 @@
-# kunkka README
+# Kunkka
 
-This is the README for your extension "kunkka". After writing up a brief description, we recommend including the following sections.
+![Kunkka Logo](images/logo.png)
 
-## Features
+## Quickly Save and Restore Your VSCode Workspace State
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Kunkka is a Visual Studio Code extension that allows you to **save the current state of your open tabs, cursors, and content** with one click and quickly **restore it** like a "cross" mark on a board.
 
 ---
 
-## Following extension guidelines
+## Features
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+- Save open files, including unsaved content changes
+- Restore open tabs in the exact order
+- Restore cursor positions and selections
+- Automatically save files after restoring
+- Convenient keyboard shortcuts for setting and going to a cross
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+---
 
-## Working with Markdown
+## Installation
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+1. Open VSCode
+2. Go to the Marketplace or run the command `Extensions: Install Extension`
+3. Search for `Kunkka` and install it
+4. Reload VSCode or open a new session
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+---
 
-## For more information
+## Usage
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- **Set Cross (save workspace state):**  
+  Press `Ctrl+Alt+X` or invoke the command `Kunkka: Set Cross` from the command palette
 
-**Enjoy!**
+- **Go To Cross (restore workspace state):**  
+  Press `Ctrl+Alt+Shift+Y` or invoke the command `Kunkka: Go To Cross`
+
+---
+
+## Keyboard Shortcuts
+
+| Command           | Shortcut               |
+|-------------------|------------------------|
+| Set Cross         | Ctrl + Alt + X         |
+| Go To Cross       | Ctrl + Alt + Shift + Y |
+
+---
+
+## FAQ
+
+**Q:** What if files aren’t saved after restoring?  
+**A:** The extension automatically saves files after restoring. If this doesn't work, check that the extension has write permissions for your project.
+
+**Q:** Can I save multiple crosses?  
+**A:** The current version supports only one cross. Multi-cross support is planned for future updates.
+
+---
+
+## License
+
+MIT License © 2025
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+*Thank you for using Kunkka!*

@@ -2,9 +2,15 @@
   "name": "kunkka",
   "displayName": "Kunkka",
   "description": "Kunkka is a VSCode extension to save and restore your current workspace state (open files, editor layout, cursor positions) with a simple hotkey, perfect for experimenting with risky code and quickly returning to a stable state.",
+  "keywords": ["workspace", "snapshot", "restore", "cross"],
+  "icon": "images/logo.png",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.54.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-user/your-repo.git"
   },
   "categories": [
     "Other"
